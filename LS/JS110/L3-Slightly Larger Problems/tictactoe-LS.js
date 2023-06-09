@@ -1,0 +1,180 @@
+/*
+ALGO:
+1. Display the current state of the 9x9 board
+2. User enters in one of the unoccupied grids
+3. Computer enters in one of the unoccupied grids
+4. Display the updated board
+5. If anyone wins, display the winner
+6. If board is full and no one wins, display tie
+7. If neither, goto step 2
+8. Play again?
+9. If yes, goto step 1
+10. Good bye.
+*/
+
+let readline = require('readline-sync');
+const INITIAL_MARKER = ' ';
+const USER_MARKER = 'X';
+const CPU_MARKER = 'O';
+const GAMES_TO_OVERALL_WIN = 5;
+
+function displayBoard(board) {
+    
+    console.log(`You are ${USER_MARKER} while computer is ${CPU_MARKER}`);
+    
+    console.log('');
+    console.log('     |     |');
+    console.log(`  ${board[1]}  |  ${board[2]}  |  ${board[3]}`);
+    console.log('     |     |');
+    console.log('-----+-----+-----');
+    console.log('     |     |');
+    console.log(`  ${board[4]}  |  ${board[5]}  |  ${board[6]}`);
+    console.log('     |     |');
+    console.log('-----+-----+-----');
+    console.log('     |     |');
+    console.log(`  ${board[7]}  |  ${board[8]}  |  ${board[9]}`);
+    console.log('     |     |');
+    console.log('');
+}
+
+function initialiseBoard() {
+    let board = {};
+    
+    for (let i = 1; i <= 9; i++) {
+        board[i] = INITIAL_MARKER;
+    }
+    return board;
+}
+
+function prompt(message) {
+    console.log(message);
+}
+
+function emptySquares(board) {
+    return Object.keys(board).filter(key => board[key] === INITIAL_MARKER);
+}
+
+function userInput(board) {
+    let square; // undefined
+    
+    while(true) {
+        let emptyGrids = emptySquares(board);
+        
+        prompt(`Please choose a square ${joinOr(emptyGrids)}: `);
+        // console.log("Empty grids, ", emptyGrids);
+        square = readline.question();
+        
+        if (emptyGrids.includes(square)) break;
+        else {
+            prompt('Invalid! Please enter again')
+            // square = readline.question();  -> wrong user inputs will alternate between this prompt and `Please choose a square between 1 and 9: `
+        }
+    }
+    
+    board[square] = USER_MARKER;
+}
+
+function cpuInput(board) {
+    let emptyGrids = emptySquares(board);
+    
+    let cpuSquare = emptyGrids[Math.floor(Math.random() * emptyGrids.length)];
+    board[cpuSquare] = CPU_MARKER;
+}
+
+function someoOneWon(board) {
+    return !!detectWinner(board);
+}
+
+// detectWinner will return 'Player' or 'Computer' or 'null'
+function detectWinner(board) {
+    const WINNING_LINES = [
+        [1,2,3], [4,5,6], [7,8,9],
+        [1,4,7], [2,5,8], [3,6,9],
+        [1,5,9], [3,5,7]
+        ];
+        
+    for (let lines = 0; lines < WINNING_LINES.length; lines++) {
+        let [sq1, sq2, sq3] = WINNING_LINES[lines];
+        if (board[sq1] === USER_MARKER && board[sq2] === USER_MARKER && board[sq3] === USER_MARKER) return 'User';
+        if (board[sq1] === CPU_MARKER && board[sq2] === CPU_MARKER && board[sq3] === CPU_MARKER) return 'CPU';
+    }
+    return null;
+}
+
+function boardFull(board) {
+    return emptySquares(board).length === 0;
+}
+
+function joinOr(array) {
+    // ouput: string
+    let lastElement = array.pop();
+    let result = array.join(", ");
+    array.push(lastElement); // so calling array stays the same
+    result = result.concat(' or ', lastElement);
+    return result;
+}
+
+function displayScore(score, board) {
+    // detectWinner
+    // report score after each game
+    // first player to win 5 games wins overall
+    // score resets to zero at the beginning of a new match
+    
+    if (detectWinner(board)) { // if winner is not null
+        let winner = detectWinner(board).toLowerCase();
+        score[winner] += 1;
+    }
+    return score;
+}
+
+/*
+GLOBAL EXECUTABLE BODY
+======================
+*/
+let score = {
+        user: 0,
+        cpu: 0
+    };
+
+while(true) {
+    let board = initialiseBoard();
+    
+    // displayBoard(board);
+    
+    while(true) {
+        displayBoard(board);
+        
+        userInput(board);
+        if(someoOneWon(board) || boardFull(board)) break;
+        
+        cpuInput(board);
+        if(someoOneWon(board) || boardFull(board)) break;
+    
+    }
+    
+    displayBoard(board);
+    
+    if (someoOneWon(board)) {
+        prompt(`${detectWinner(board)} won!`);
+    } else {
+        prompt(`It's a tie!`);
+    }
+    
+    score = displayScore(score, board);
+    console.log(`Your Score: ${score.user}`)
+    console.log(`Computer Score: ${score.cpu}`)
+    
+    if(score.user === 5 || score.cpu === 5) {
+        console.log(`\n GAME OVER! \n`)
+        prompt('Do you want to play again (y/n): ');
+        let answer = readline.question();
+        if(answer.toLowerCase()[0] !== 'y') break;
+    }
+    /*
+    prompt('Do you want to play again (y/n): ');
+    let answer = readline.question();
+    if(answer.toLowerCase()[0] !== 'y') break;
+    */
+}
+
+prompt("Thank you for playing TicTacToe!")
