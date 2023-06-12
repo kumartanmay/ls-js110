@@ -17,6 +17,11 @@ const INITIAL_MARKER = ' ';
 const USER_MARKER = 'X';
 const CPU_MARKER = 'O';
 const GAMES_TO_OVERALL_WIN = 5;
+const WINNING_LINES = [
+        [1,2,3], [4,5,6], [7,8,9],
+        [1,4,7], [2,5,8], [3,6,9],
+        [1,5,9], [3,5,7]
+        ];
 
 function displayBoard(board) {
     
@@ -38,6 +43,7 @@ function displayBoard(board) {
 }
 
 function initialiseBoard() {
+    
     let board = {};
     
     for (let i = 1; i <= 9; i++) {
@@ -73,12 +79,84 @@ function userInput(board) {
     
     board[square] = USER_MARKER;
 }
+/*
+The computer currently picks a square at random. That's not very interesting. 
+Let's make the computer defensive-minded so that, when an immediate threat exists, it will try to defend the 3rd square. 
+An immediate threat occurs when the human player has 2 squares in a row with the 3rd square unoccupied. 
+If there's no immediate threat, the computer can pick a random square.
 
+Info:
+1. When user has two of the three winning sequence from a winning line, cpu will defend the third square
+2. The third square should be unoccupied
+3. If the two sequences are not matching with any winning line, then cpu will input randomnly
+
+EXAMPLE:
+1. user input = [1,2] / [2,3] / [1,3]
+2. cpu input = [3] / [1] / [2] (provided it is unoccupied)
+
+1. user input = [1,4] / [4,7] / [1,7]
+2. cpu input = [7] / [1] / [4]
+
+Data structure:
+1. Input: current state of the board: grids occupied by user + empty grids
+2. Output: cpu marker
+
+Algo:
+1. get the sequence of grids occupied by human marker
+2. check the sequence matches with two elements in any of the winning lines
+    2.1 if yes, check if the third sequence is an empty grid
+    2.2 if yes, next computer marker is the empty grid
+3. If it is a no in #2/ #2.1/ #2.2 then randomnly assign a grid to cpu
+*/
 function cpuInput(board) {
     let emptyGrids = emptySquares(board);
+    let cpuSquare;
     
-    let cpuSquare = emptyGrids[Math.floor(Math.random() * emptyGrids.length)];
+    for (let lines = 0; lines < WINNING_LINES.length; lines++) {
+        // let [sq1, sq2, sq3] = WINNING_LINES[lines];
+        
+        // find the two grids of winning sequence already occupied
+        let line = WINNING_LINES[lines];
+        let userLine = line.filter(seq => board[seq] === USER_MARKER); 
+        // console.log(userLine);
+        if(userLine.length === 2) { // game is at risk
+            console.log(userLine);
+            // find the unoccupied sequence
+            let gridAtRisk = line.filter(seq=> board[seq] === INITIAL_MARKER)[0];
+            // console.log(emptyGrids.includes(String(gridAtRisk)));
+            if(emptyGrids.includes(String(gridAtRisk))) {
+                cpuSquare = gridAtRisk;
+                console.log("cpuSquare: ", cpuSquare);
+                board[cpuSquare] = CPU_MARKER;
+                return board;
+            }
+        }
+        /*
+        if ((board[sq1] === USER_MARKER && board[sq2] === USER_MARKER) || 
+            (board[sq2] === USER_MARKER && board[sq3] === USER_MARKER) ||
+            (board[sq3] === USER_MARKER && board[sq1] === USER_MARKER)) {
+            // cpuSquare = sq3; // overwriting user input
+            /*
+            check if any of square is in empty grids
+            if yes, then cpu input is the third grid
+            
+            cpuSquare should be assigned one of the empty winning lines
+            cpuSquare is a number from the WINNING_LINES[lines]
+            The number is also one of the empty grids
+            find whether line is in the emptyGrids
+            
+            cpuSquare = WINNING_LINES[lines].filter(line => emptyGrids.includes(line))[0];
+                
+            if (cpuSquare) {
+                board[cpuSquare] = CPU_MARKER;
+                return board;
+            }
+        }
+        */
+    }
+    cpuSquare = emptyGrids[Math.floor(Math.random() * emptyGrids.length)];
     board[cpuSquare] = CPU_MARKER;
+    return board;
 }
 
 function someoOneWon(board) {
@@ -87,11 +165,6 @@ function someoOneWon(board) {
 
 // detectWinner will return 'Player' or 'Computer' or 'null'
 function detectWinner(board) {
-    const WINNING_LINES = [
-        [1,2,3], [4,5,6], [7,8,9],
-        [1,4,7], [2,5,8], [3,6,9],
-        [1,5,9], [3,5,7]
-        ];
         
     for (let lines = 0; lines < WINNING_LINES.length; lines++) {
         let [sq1, sq2, sq3] = WINNING_LINES[lines];
@@ -164,7 +237,7 @@ while(true) {
     console.log(`Your Score: ${score.user}`)
     console.log(`Computer Score: ${score.cpu}`)
     
-    if(score.user === 5 || score.cpu === 5) {
+    if(score.user === GAMES_TO_OVERALL_WIN || score.cpu === GAMES_TO_OVERALL_WIN) {
         console.log(`\n GAME OVER! \n`)
         prompt('Do you want to play again (y/n): ');
         let answer = readline.question();
