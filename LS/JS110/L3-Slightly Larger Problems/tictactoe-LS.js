@@ -111,6 +111,30 @@ Algo:
 function cpuInput(board) {
     let emptyGrids = emptySquares(board);
     let cpuSquare;
+
+    /*
+    CPU OFFENSE
+    ===========
+    CPU offense will check for two empty grids in winning sequence.
+    */
+    for (let lines = 0; lines < WINNING_LINES.length; lines++) {
+        
+        // find the two grids of winning sequence already occupied
+        let line = WINNING_LINES[lines];
+        let winLine = line.filter(seq => board[seq] === CPU_MARKER); 
+        
+        // cpu makes a winning move
+        if(winLine.length === 2) { 
+            // find the unoccupied sequence
+            let gridAtTarget = line.filter(seq=> board[seq] === INITIAL_MARKER)[0];
+            if(emptyGrids.includes(String(gridAtTarget))) {
+                cpuSquare = gridAtTarget;
+                console.log("cpuSquare: ", cpuSquare);
+                board[cpuSquare] = CPU_MARKER;
+                return board;
+            }
+        }
+    }
     
     // CPU Defense
     for (let lines = 0; lines < WINNING_LINES.length; lines++) {
@@ -133,28 +157,7 @@ function cpuInput(board) {
             }
         }
     }
-    // CPU Offense
-    /*
-    If CPU defense does not execute then, CPU offense will check for two empty grids in winning sequence.
-    */
-    for (let lines = 0; lines < WINNING_LINES.length; lines++) {
-        
-        // find the two grids of winning sequence already occupied
-        let line = WINNING_LINES[lines];
-        let winLine = line.filter(seq => board[seq] === CPU_MARKER); 
-        
-        // cpu makes a winning move
-        if(winLine.length === 2) { 
-            // find the unoccupied sequence
-            let gridAtTarget = line.filter(seq=> board[seq] === INITIAL_MARKER)[0];
-            if(emptyGrids.includes(String(gridAtTarget))) {
-                cpuSquare = gridAtTarget;
-                console.log("cpuSquare: ", cpuSquare);
-                board[cpuSquare] = CPU_MARKER;
-                return board;
-            }
-        }
-    }
+    
     
     cpuSquare = emptyGrids[Math.floor(Math.random() * emptyGrids.length)];
     board[cpuSquare] = CPU_MARKER;
