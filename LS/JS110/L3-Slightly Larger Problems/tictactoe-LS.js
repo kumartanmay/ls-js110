@@ -16,12 +16,14 @@ let readline = require('readline-sync');
 const INITIAL_MARKER = ' ';
 const USER_MARKER = 'X';
 const CPU_MARKER = 'O';
-const GAMES_TO_OVERALL_WIN = 5;
+const GAMES_TO_OVERALL_WIN = 1;
 const WINNING_LINES = [
         [1,2,3], [4,5,6], [7,8,9],
         [1,4,7], [2,5,8], [3,6,9],
         [1,5,9], [3,5,7]
         ];
+
+const firstMove = ["Player", "Computer", "Choose"];
 
 function displayBoard(board) {
     
@@ -157,7 +159,14 @@ function cpuInput(board) {
             }
         }
     }
-    
+    /*
+    CPU selects #5 
+    */
+    if(emptyGrids.includes('5')) {
+        cpuSquare = 5;
+        board[cpuSquare] = CPU_MARKER;
+        return board;
+    }
     
     cpuSquare = emptyGrids[Math.floor(Math.random() * emptyGrids.length)];
     board[cpuSquare] = CPU_MARKER;
@@ -209,6 +218,48 @@ function displayScore(score, board) {
 GLOBAL EXECUTABLE BODY
 ======================
 */
+/*
+Can you change the game so that the computer moves first? 
+See if you can make this a setting at the top of the program (i.e., a constant) 
+so that you can play the game with either the player or computer going first. 
+Try adding a 3rd option that causes your game to prompt the user for who goes first before play begins. 
+Valid options for the constant used in this feature can be "player", "computer", or "choose".
+
+Rules/ Info:
+1. The program decides who goes first: "player", "computer" or "choose".
+2. If it is choose, then user decides who goes first
+
+Example:
++ Who goes first? Player, Computer or Choose: 
+    Player goes first - userInput
++ Who goes first? Player, Computer or Choose: 
+    Computer goes first - cpuInput
++ Who goes first? Choose: 
+    Please enter "Computer" or "Player": Computer -> Goto step 2
+    Please enter "Computer" or "Player": Player -> Goto step 1
+    
+Data Structure:
+1. constant array = ["Player", "Computer", "Choose"]
+2. String - one among the elements of array
+
+Algo:
+1. Define a constant array holding the options ["Player", "Computer", "Choose"]
+2. Randomly selects one among the three. Output: String
+    2.1 Iterate over the constant array and use the random function and assign it to a variable
+3. The string decides which player makes the first move
+    3.1 If the string is "Choose", then take user input: either "Player" or "Computer"
+    3.2 the user input is reassigned to the variable
+*/ 
+
+function whoMakesFirstMove(board) {
+    let firstChance = firstMove[Math.floor(Math.random()*firstMove.length)];
+    if (firstChance === "Choose") {
+        prompt(`Please select one among ${firstMove[0]} or ${firstMove[1]}:`);
+        firstChance = readline.question();
+    }
+    return firstChance;
+}
+
 let score = {
         user: 0,
         cpu: 0
@@ -219,15 +270,41 @@ while(true) {
     
     // displayBoard(board);
     
+    let toss = whoMakesFirstMove(board);
+    prompt(`${toss} makes the first move!`);
+    /*
+    switch(toss) {
+        case "Player":
+            userInput(board);
+            break;
+        case "Computer":
+            cpuInput(board);
+            break;
+        default:
+        prompt(`Invalid Toss!`);
+        break;
+    }
+    */
     while(true) {
         displayBoard(board);
         
-        userInput(board);
-        if(someoOneWon(board) || boardFull(board)) break;
-        
-        cpuInput(board);
-        if(someoOneWon(board) || boardFull(board)) break;
-    
+        if (toss === "Player") {
+            userInput(board);
+            displayBoard(board);
+            if(someoOneWon(board) || boardFull(board)) break;
+            
+            cpuInput(board);
+            displayBoard(board);
+            if(someoOneWon(board) || boardFull(board)) break;
+        } else {
+            cpuInput(board);
+            displayBoard(board);
+            if(someoOneWon(board) || boardFull(board)) break;
+            
+            userInput(board);
+            displayBoard(board);
+            if(someoOneWon(board) || boardFull(board)) break;
+        }
     }
     
     displayBoard(board);
@@ -246,7 +323,15 @@ while(true) {
         console.log(`\n GAME OVER! \n`)
         prompt('Do you want to play again (y/n): ');
         let answer = readline.question();
-        if(answer.toLowerCase()[0] !== 'y') break;
+        let validChoices = ['y', 'n'];
+        if(answer.toLowerCase() === 'y') continue;
+        if(answer.toLowerCase() === 'n') break;
+        while(!validChoices.includes(answer.toLowerCase())) {
+            prompt('Invalid input! Please enter one among "y" or "Y" or "n" or "N".');
+            prompt('Do you want to play again (y/n): ');
+            answer = readline.question();
+        }
+        continue;
     }
     /*
     prompt('Do you want to play again (y/n): ');
@@ -255,4 +340,4 @@ while(true) {
     */
 }
 
-prompt("Thank you for playing TicTacToe!")
+prompt("Thank you for playing TicTacToe!");
