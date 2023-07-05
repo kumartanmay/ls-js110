@@ -215,6 +215,32 @@ function displayScore(score, board) {
 }
 
 /*
+Play again
+==========
+1. After the game is over, ask user to play again
+2. Only valid choices are y, Y, n and N.
+3. If the user input is anything other than these four then ask for the correct input
+
+Algo:
+====
+
+
+*/
+
+function playAgain() {
+    let answer;
+    while(true) {
+        prompt('Do you want to play again (y/n): ');
+        answer = readline.question().toLowerCase();
+        let validChoices = ['y', 'n'];
+        if (validChoices.includes(answer)) return answer;
+        else {
+            prompt('Invalid input! Please enter one among "y" or "Y" or "n" or "N".');
+        }
+    }
+}
+
+/*
 GLOBAL EXECUTABLE BODY
 ======================
 */
@@ -321,6 +347,8 @@ while(true) {
     
     if(score.user === GAMES_TO_OVERALL_WIN || score.cpu === GAMES_TO_OVERALL_WIN) {
         console.log(`\n GAME OVER! \n`)
+        if (playAgain() !== 'y') break;
+        /*
         prompt('Do you want to play again (y/n): ');
         let answer = readline.question();
         let validChoices = ['y', 'n'];
@@ -331,7 +359,7 @@ while(true) {
             prompt('Do you want to play again (y/n): ');
             answer = readline.question();
         }
-        continue;
+        continue; */
     }
     /*
     prompt('Do you want to play again (y/n): ');
