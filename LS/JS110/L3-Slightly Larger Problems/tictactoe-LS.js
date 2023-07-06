@@ -201,17 +201,38 @@ function joinOr(array) {
     return result;
 }
 
-function displayScore(score, board) {
+/*
+KEEP SCORE
+==========
+Keep track of how many times the player and computer each win, and report the scores after each game. 
+The first player to win 5 games wins the overall match (a series of 2 or more games). 
+The score should reset to 0 for each player when beginning a new match. Don't use any global variables. 
+However, you may want to use a global constant to represent the number of games needed to win the match.
+
+Algo
+====
+1. Userscore and cpuscore should be zero if it is the first game of the series
+2. 
+*/
+function displayScore(userScore, cpuScore, board) {
     // detectWinner
     // report score after each game
     // first player to win 5 games wins overall
     // score resets to zero at the beginning of a new match
-    
+    /*
     if (detectWinner(board)) { // if winner is not null
         let winner = detectWinner(board).toLowerCase();
         score[winner] += 1;
     }
     return score;
+    */
+    
+    if (detectWinner(board)) { // if winner is not null
+        let winner = detectWinner(board);
+        winner === 'User' ? userScore += 1 : cpuScore += 1;
+    }
+    return [userScore, cpuScore]
+
 }
 
 /*
@@ -220,10 +241,6 @@ Play again
 1. After the game is over, ask user to play again
 2. Only valid choices are y, Y, n and N.
 3. If the user input is anything other than these four then ask for the correct input
-
-Algo:
-====
-
 
 */
 
@@ -243,8 +260,6 @@ function playAgain() {
 /*
 GLOBAL EXECUTABLE BODY
 ======================
-*/
-/*
 Can you change the game so that the computer moves first? 
 See if you can make this a setting at the top of the program (i.e., a constant) 
 so that you can play the game with either the player or computer going first. 
@@ -285,32 +300,21 @@ function whoMakesFirstMove(board) {
     }
     return firstChance;
 }
-
+/*
 let score = {
         user: 0,
         cpu: 0
     };
-
+*/
 while(true) {
     let board = initialiseBoard();
-    
-    // displayBoard(board);
+    let userScore = 0;
+    let cpuScore = 0;
+    let scores = [];
     
     let toss = whoMakesFirstMove(board);
     prompt(`${toss} makes the first move!`);
-    /*
-    switch(toss) {
-        case "Player":
-            userInput(board);
-            break;
-        case "Computer":
-            cpuInput(board);
-            break;
-        default:
-        prompt(`Invalid Toss!`);
-        break;
-    }
-    */
+    
     while(true) {
         displayBoard(board);
         
@@ -340,7 +344,7 @@ while(true) {
     } else {
         prompt(`It's a tie!`);
     }
-    
+    /*
     score = displayScore(score, board);
     console.log(`Your Score: ${score.user}`)
     console.log(`Computer Score: ${score.cpu}`)
@@ -348,24 +352,16 @@ while(true) {
     if(score.user === GAMES_TO_OVERALL_WIN || score.cpu === GAMES_TO_OVERALL_WIN) {
         console.log(`\n GAME OVER! \n`)
         if (playAgain() !== 'y') break;
-        /*
-        prompt('Do you want to play again (y/n): ');
-        let answer = readline.question();
-        let validChoices = ['y', 'n'];
-        if(answer.toLowerCase() === 'y') continue;
-        if(answer.toLowerCase() === 'n') break;
-        while(!validChoices.includes(answer.toLowerCase())) {
-            prompt('Invalid input! Please enter one among "y" or "Y" or "n" or "N".');
-            prompt('Do you want to play again (y/n): ');
-            answer = readline.question();
-        }
-        continue; */
     }
-    /*
-    prompt('Do you want to play again (y/n): ');
-    let answer = readline.question();
-    if(answer.toLowerCase()[0] !== 'y') break;
     */
+    [userScore, cpuScore] = displayScore(userScore, cpuScore, board);
+    console.log(`Your Score: ${userScore}`);
+    console.log(`CPU Score: ${cpuScore}`);
+    
+    if(userScore === GAMES_TO_OVERALL_WIN || cpuScore === GAMES_TO_OVERALL_WIN) {
+        console.log(`\n GAME OVER! \n`);
+        if(playAgain() !== 'y') break;
+    }
 }
 
 prompt("Thank you for playing TicTacToe!");
