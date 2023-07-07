@@ -23,7 +23,7 @@ const WINNING_LINES = [
         [1,5,9], [3,5,7]
         ];
 
-const firstMove = ["Player", "Computer", "Choose"];
+const firstMove = ["User", "CPU", "Choose"];
 
 function displayBoard(board) {
     
@@ -209,27 +209,16 @@ The first player to win 5 games wins the overall match (a series of 2 or more ga
 The score should reset to 0 for each player when beginning a new match. Don't use any global variables. 
 However, you may want to use a global constant to represent the number of games needed to win the match.
 
-Algo
-====
-1. Userscore and cpuscore should be zero if it is the first game of the series
-2. 
 */
 function displayScore(userScore, cpuScore, board) {
     // detectWinner
     // report score after each game
     // first player to win 5 games wins overall
     // score resets to zero at the beginning of a new match
-    /*
-    if (detectWinner(board)) { // if winner is not null
-        let winner = detectWinner(board).toLowerCase();
-        score[winner] += 1;
-    }
-    return score;
-    */
     
     if (detectWinner(board)) { // if winner is not null
         let winner = detectWinner(board);
-        winner === 'User' ? userScore += 1 : cpuScore += 1;
+        winner === firstMove[0] ? userScore += 1 : cpuScore += 1;
     }
     return [userScore, cpuScore]
 
@@ -255,6 +244,17 @@ function playAgain() {
             prompt('Invalid input! Please enter one among "y" or "Y" or "n" or "N".');
         }
     }
+}
+
+// chooseSquare automatically decides which user will select a square
+function chooseSquare(board, currentPlayer) {
+    console.log(`chooseSq curr player: ${currentPlayer}`);
+    return currentPlayer === firstMove[0] ? userInput(board) : cpuInput(board);
+}
+
+function alternatePlayer(player) {
+    console.log(`alternatePlayer ka player: ${player}`);
+    return player === firstMove[0] ? player = firstMove[1] : player = firstMove[0];
 }
 
 /*
@@ -294,47 +294,31 @@ Algo:
 
 function whoMakesFirstMove(board) {
     let firstChance = firstMove[Math.floor(Math.random()*firstMove.length)];
-    if (firstChance === "Choose") {
+    if (firstChance === firstMove[2]) {
         prompt(`Please select one among ${firstMove[0]} or ${firstMove[1]}:`);
         firstChance = readline.question();
     }
     return firstChance;
 }
-/*
-let score = {
-        user: 0,
-        cpu: 0
-    };
-*/
+
 while(true) {
     let board = initialiseBoard();
     let userScore = 0;
     let cpuScore = 0;
-    let scores = [];
+    let currentPlayer;
     
     let toss = whoMakesFirstMove(board);
     prompt(`${toss} makes the first move!`);
     
+    toss === firstMove[0] ? currentPlayer = firstMove[0] : currentPlayer = firstMove[1];
+    
     while(true) {
         displayBoard(board);
-        
-        if (toss === "Player") {
-            userInput(board);
-            displayBoard(board);
-            if(someoOneWon(board) || boardFull(board)) break;
-            
-            cpuInput(board);
-            displayBoard(board);
-            if(someoOneWon(board) || boardFull(board)) break;
-        } else {
-            cpuInput(board);
-            displayBoard(board);
-            if(someoOneWon(board) || boardFull(board)) break;
-            
-            userInput(board);
-            displayBoard(board);
-            if(someoOneWon(board) || boardFull(board)) break;
-        }
+        chooseSquare(board, currentPlayer);
+        // displayBoard(board);
+        currentPlayer = alternatePlayer(currentPlayer);
+        console.log(`Alternate Player: ${currentPlayer}`);
+        if(someoOneWon(board) || boardFull(board)) break;
     }
     
     displayBoard(board);
@@ -344,16 +328,7 @@ while(true) {
     } else {
         prompt(`It's a tie!`);
     }
-    /*
-    score = displayScore(score, board);
-    console.log(`Your Score: ${score.user}`)
-    console.log(`Computer Score: ${score.cpu}`)
     
-    if(score.user === GAMES_TO_OVERALL_WIN || score.cpu === GAMES_TO_OVERALL_WIN) {
-        console.log(`\n GAME OVER! \n`)
-        if (playAgain() !== 'y') break;
-    }
-    */
     [userScore, cpuScore] = displayScore(userScore, cpuScore, board);
     console.log(`Your Score: ${userScore}`);
     console.log(`CPU Score: ${cpuScore}`);
