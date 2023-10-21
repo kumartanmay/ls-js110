@@ -85,7 +85,7 @@ function sortStringsByConsonants(array) {
     let sortedObjArray = Object.entries(objArray).sort((a,b) => b[1] - a[1]);
     // console.log(sortedObjArray);
     let sortedObj = Object.keys(sortedObjArray.reduce((r, [k, v]) => ({ ...r, [k]: v }), {}));
-    console.log(sortedObj);
+    return sortedObj;
 }
 
 console.log(sortStringsByConsonants(['aa', 'baa', 'ccaa', 'dddaa'])); // ['dddaa', 'ccaa', 'aa', 'baa']
