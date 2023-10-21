@@ -50,9 +50,9 @@ ALGORITHM
 =========
 1. Input = number of blocks provided
 2. Provided number the number of blocks provided is greater than zero:
-    2.1. Run a loop to find the sum of squares until the sum is greater than the number of blocks provided
-    2.2. Largest number of layers that can be formed in a structure = count of loops run - 1.
-    2.3. The difference between the sum less than the value in the last loop and the number of blocks provided is the result
+    2.1. Run a loop to find the sum of squares until the left over is less than the square of the layer number
+    2.2. Push the count of blocks in each layer in the array. The sum of elements in the array is the blocks used
+    2.3. leftover is difference between count of blocks provided and the sum of elements in the array
 3. Else, it is zero.
 */
 
