@@ -21,10 +21,17 @@ Algo
 */
 
 function integerToString(number) {
-    console.log(`${number}`);
+    if (number > 0){
+        console.log(`+${number}`);
+    } else {
+        console.log(`${number}`);
+    }
 }
 
 integerToString(4321);        // "4321"
 integerToString(0);           // "0"
 integerToString(5000);        // "5000"
 integerToString(1234567890);  // "1234567890"
+integerToString(+5000);        // "+5000"
+integerToString(-5000);        // "-5000"
+integerToString(0);        // "0"
