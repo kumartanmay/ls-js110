@@ -33,7 +33,7 @@ function sortNested(array) {
     
     result.forEach(subArray => {
         if(typeof(subArray[0]) === "number") subArray.sort((a,b) => a - b);
-        else subArray.sort();
+        else subArray.sort()
     })
     
     console.log(result);
