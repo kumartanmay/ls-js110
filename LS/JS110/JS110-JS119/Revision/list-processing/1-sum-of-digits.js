@@ -21,8 +21,7 @@ algo
 
 function sum(num){
     let arrayDigits = String(num).split("");
-    
-    let numArrayDigits = arrayDigits.map(elem => Number(elem))
+    let numArrayDigits = arrayDigits.map(elem => Number(elem));
     console.log(numArrayDigits.reduce((a,b) => a+b));
 }
 
