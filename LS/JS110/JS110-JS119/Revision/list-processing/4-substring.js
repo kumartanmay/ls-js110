@@ -26,10 +26,13 @@ algo
 
 function leadingSubstrings(string) {
     let result = [];
+    let arrString = string.split("");
     
+    result = arrString.map((char,index) => string.slice(0,index+1));
+    /*
     for(let i = string.length; i > 0; i--) {
         result.push(string.slice(0,i));
-    }
+    }*/
     
     return result.sort((a,b) => a.length - b.length);
 }
