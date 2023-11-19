@@ -19,7 +19,7 @@ a variable to store intermittent sum
 algo
 ====
 1. Initiate a variable and assign an initial value zero to it
-2. Iterate over each element of the array and add it to the variable
+2. At each iteration, iterate over each element of the array until the count of iteration and add it to the variable
 3. Return the variable at the end of iteration
 
 */
