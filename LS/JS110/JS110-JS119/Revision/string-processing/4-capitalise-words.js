@@ -26,7 +26,7 @@ algo
 function wordCap(string) {
     let arrString = string.split(" ");
     
-    return arrString.map(word => word[0].toUpperCase() + word.slice(1,word.length)).join(" ");
+    return arrString.map(word => word[0].toUpperCase() + word.slice(1,word.length).toLowerCase()).join(" ");
 }
 
 console.log(wordCap('four score and seven'));       // "Four Score And Seven"
