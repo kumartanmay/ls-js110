@@ -42,3 +42,5 @@ console.log(fibonacci(4));
 console.log(fibonacci(5));
 console.log(fibonacci(12));
 console.log(fibonacci(20));
+console.log(fibonacci(50));
+console.log(fibonacci(75));
