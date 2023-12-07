@@ -25,8 +25,8 @@ function fridayThe13ths(year) {
     let daysOn13th = [];
     // determine days of 13th of each month of the year
     const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-    MONTHS.forEach(month => {
-        let date = new Date(`${month} 13, ${year} 00:00:00`);
+    MONTHS.forEach((_, index) => {
+        let date = new Date(year, index, 13);
         let days = date.getDay()
         daysOn13th.push(days);
     })
