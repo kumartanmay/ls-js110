@@ -34,20 +34,19 @@ algo:
 */
 
 function transpose(matrix) {
-    let result = [];
+    // let result = [];
     let rows = matrix.length;
     let cols = rows;
     
     for(let rowCount = 0; rowCount < rows; rowCount++) {
-        result.push([]);
-        for (let colCount = 0; colCount < cols; colCount++) {
-            // console.log(matrix[colCount][rowCount]);
-            // console.log(result[rowCount][colCount]);
-            result[rowCount].push(matrix[colCount][rowCount]);
+        // result.push([]);
+        for (let colCount = rowCount; colCount < cols; colCount++) {
+            // matrix[rowCount].push(matrix[colCount][rowCount]);
+            [matrix[rowCount][colCount],matrix[colCount][rowCount]] = [matrix[colCount][rowCount],matrix[rowCount][colCount]];
         }
     }
     
-    return result;
+    return matrix;
 }
 
 const matrix = [
@@ -58,5 +57,5 @@ const matrix = [
 
 let newMatrix = transpose(matrix);
 
-console.log(newMatrix);      // [[1, 4, 3], [5, 7, 9], [8, 2, 6]]
+// console.log(newMatrix);      // [[1, 4, 3], [5, 7, 9], [8, 2, 6]]
 console.log(matrix);         // [[1, 5, 8], [4, 7, 2], [3, 9, 6]]
