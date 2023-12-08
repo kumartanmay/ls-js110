@@ -28,8 +28,9 @@ algo:
 =====
 1. create an empty array which will store the result
 2. determine the rows in the input array. col will be same as row
-2. iterate on each element of the input array
-3. use array destructuring to swap positions of elements
+3. iterate on row of the input array
+4. push an empty array before assigning values
+5. assign the value to the result;
 */
 
 function transpose(matrix) {
@@ -42,7 +43,7 @@ function transpose(matrix) {
         for (let colCount = 0; colCount < cols; colCount++) {
             // console.log(matrix[colCount][rowCount]);
             // console.log(result[rowCount][colCount]);
-            result[rowCount][colCount] = matrix[colCount][rowCount];
+            result[rowCount].push(matrix[colCount][rowCount]);
         }
     }
     
