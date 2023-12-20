@@ -97,8 +97,8 @@ function diamond(totalRows) {
 
 // returns stars and whitespaces in a row
 function starsAndWhiteSpaces(totalRows, row) {
-    let stars = '*';
-    let whitespaces = ' ';
+    let whitespaces = '*';
+    let stars = ' ';
     let theRow = []
     
     let midRow = Math.floor(totalRows/2) + 1;
@@ -149,4 +149,4 @@ function starsAndWhiteSpaces(totalRows, row) {
     console.log(theRow.join(''));
 }
 
-diamond(15);
+diamond(11);
