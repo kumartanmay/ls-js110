@@ -22,12 +22,10 @@ function to merge sorted arrays
 
 algo
 ====
-1. Determine the length and middle of the array
-2. create new subarrays, starting from zero to mid and mid + 1 to the last element in the array
-3. Iterate through the subarray, if the length of subarray is greater than 1
-    a. Go to 1
-4. Now the length of nested arrays is 1, all the nested arrays are sorted
-5. function to merge two sorted arrays
+1. Determine the length and return the array if the length is 1
+2. create two new subarrays, starting from zero to mid and mid + 1 to the last element in the array
+3. reassign the SUBARRAYS by recursively calling the function: goto step 1
+4. function to merge two sorted arrays
     a. create copies of the arrays
     b. initiate an empty array to store the result
     c. compare the first elements of both the arrays, push the smaller into the result and delete it
