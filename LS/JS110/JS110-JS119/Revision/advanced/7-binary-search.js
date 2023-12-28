@@ -32,9 +32,9 @@ algo
 0. create a copy of the array
 1. find the mid element of the array
 2. firsthalf = array from first item to the mid element; second half = array from the next element to the mid until the last element
-3. compare the mid element with the search item
-    a. if search item is greater than mid element, replace the search array with the second half
-    b. if search item is lesser than mid element, replace the search array with first half
+3. compare the mid element with the search item, return index of mid item if it is same as search item else
+    a. if search item is greater than mid element, start index is index of the mid item
+    b. if search item is lesser than mid element, end index index of he mid item
 4. Go to step 0 until seearch iteam is found
 5. if not, return -1
 */
