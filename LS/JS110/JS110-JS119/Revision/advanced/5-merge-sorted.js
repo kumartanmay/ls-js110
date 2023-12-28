@@ -20,13 +20,10 @@ other variables
 algo
 ====
 1. Initiate an empty array to store the sorted numbers
-2. If either of the input arrays is empty, concat the two and assign it to resulting array
-2. Else, create a copies of both the sorted arrays and perform operations on it 
-    a. Compare the first element of the one with elements in the other until it is bigger than the other
-    b. If the first one is smaller, place it in the resulting array, delete the smaller one from the array, move to the next element
-    c. If not, the other element will be placed in the resulting array, delete the other one and compare it with next element of second array
-    d. The one placed, need not be compared again with other elements in the other array
-    e. Concat the elements remaining in either of the arrays in the resulting array
+2. Create copies of sorted arrays to perform operations on it
+    a. If the first one is smaller, place it in the resulting array, delete the smaller one from the array, move to the next element
+    b. If not, the other element will be placed in the resulting array, delete the other one and compare it with next element of second array
+3. Concat the elements remaining in either of the arrays in the resulting array
 */
 
 function merge(sorted1, sorted2) {
