@@ -28,7 +28,7 @@ algo
 ====
 1. Define the block
 2. Convert all the letters in the string to the same case as in the block
-3. For each letter in the string determine the block of letters (check inclusion)
+3. For each letter in the string determine the block of letters (check inclusion)x``
 4. If it is found, remove the block
     a. splice the array until the block
 5. If any letter does not find its corresponding block, return false
@@ -49,6 +49,11 @@ function isBlockWord(string) {
         // console.log(block);
     }
     
+    /*
+    1. block contains the indices of blocks, probably falsy values in case block is not found,
+    2. If all elements in blocks are indices, means all letters are from unique blocks, then it will reduce to true
+    3. Else it will reduce to false
+    */
     return Number.isInteger(indexBlock.reduce((a,b) => a && b));
 }
 
