@@ -34,10 +34,11 @@ starsInRow(row, grid): a function to determine the combination of stars & whites
 each row has three stars
 each row has a length of the grid
 rest of the chars in the row are whitespaces
+position of first star in each row depends on the grid value and row number
 
 white spaces between stars in a row
 row = 0, stars position = 0
-whitespaces between stars = (grid - 3)/ (row + 2)
+whitespaces between stars = (grid - 3)/ 2 - row
 
 row = 1, stars position = 1
 whitespaces between stars = whitespaces in previous step - 1;
@@ -80,26 +81,16 @@ function stars(grid) {
 
 function starsInRow(row, grid) {
     let starsAndSpaces = [];
-    let whiteSpacesFirstRow = (grid - 3)/ 2; // whitespaces in first row
-    
-    if(row === 0) {
-        starsAndSpaces.push(STAR);
-        pushSpace(whiteSpacesFirstRow, starsAndSpaces);
-        starsAndSpaces.push(STAR);
-        pushSpace(whiteSpacesFirstRow, starsAndSpaces);
-        starsAndSpaces.push(STAR);
+    let whiteSpaces = (grid - 3)/ 2 - row; // whitespaces in first row
+
+    for(let i = 0; i < row; i++) {
+        starsAndSpaces.push(SPACE);
     }
-    else {
-        let whiteSpaces = whiteSpacesFirstRow - row;
-        for(let i = 0; i < row; i++) {
-            starsAndSpaces.push(SPACE);
-        }
-        starsAndSpaces[row] = STAR;
-        pushSpace(whiteSpaces, starsAndSpaces);
-        starsAndSpaces.push(STAR);
-        pushSpace(whiteSpaces, starsAndSpaces);
-        starsAndSpaces.push(STAR);
-    }
+    starsAndSpaces[row] = STAR;
+    pushSpace(whiteSpaces, starsAndSpaces);
+    starsAndSpaces.push(STAR);
+    pushSpace(whiteSpaces, starsAndSpaces);
+    starsAndSpaces.push(STAR);
     
     return starsAndSpaces.join("");
 }
