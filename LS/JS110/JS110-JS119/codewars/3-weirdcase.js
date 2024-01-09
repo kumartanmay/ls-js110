@@ -3,7 +3,7 @@ convert every fourth char of every second word in a string to a uppercase. rest 
 
 algo
 1. split the string into an array of words
-2. from the second word, slice upto third char, convert the fourth to uppercase, concat the fifth char onwards
+2. Of every second word, slice every fourth char, convert the it to uppercase, concat the next char onwards
 3. join the array
 */
 
