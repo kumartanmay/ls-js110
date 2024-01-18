@@ -30,7 +30,7 @@ function solution(number){
     let result = mult15.concat(mult5, mult3);
     // removing the number 
     if(result.includes(number)) result.splice(result.indexOf(number),1);
-    console.log(result);
+    // console.log(result);
     
     return result.reduce((a,b) => a + b,0);
   }
